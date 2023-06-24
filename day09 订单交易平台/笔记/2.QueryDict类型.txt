@@ -1,0 +1,40 @@
+http://127.0.0.1:8000/customer/list/?filter=wupeiqi&age=19
+
+request.GET  对象    QueryDict类型
+
+1.默认QueryDict不允许被修改 _mutable=False
+	request.GET._mutable = True
+
+2.设置值
+	request.GET.setlist("name",[123])    # filter=wupeiqi&age=19&name=123
+	request.GET.setlist("name",[123,32]) # filter=wupeiqi&age=19&name=123&name=32
+
+3.调用urlencode方法，可以拼接
+	paramString = request.GET.urlencode()
+	print(paramString) "filter=wupeiqi&age=19&name=123"
+
+------测试-----
+import copy
+
+query_dict = copy.deepcopy(request.GET)
+
+query_dict._mutable = True
+query_dict.setlist('page',[1])
+paramString = query_dict.urlencode() "filter=wupeiqi&age=19&page=1"
+
+
+query_dict._mutable = True
+query_dict.setlist('page',[2])
+paramString = query_dict.urlencode() "filter=wupeiqi&age=19&page=2"
+
+
+request.GET._mutable = True
+request.GET.setlist('page',[3])
+paramString = request.GET.urlencode() "filter=wupeiqi&age=19&page=3"
+
+-------------------------------------------
+
+
+
+
+

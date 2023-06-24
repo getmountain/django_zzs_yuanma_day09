@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+    <div style="margin-bottom: 5px">
+        <a href="{% url 'customer_add' %}?xxx" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus-sign"></span> 新建
+        </a>
+
+        <div class="right">
+            <form class="form-inline" method="get">
+                <div class="form-group">
+                    <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
+                </div>
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>手机号</th>
+            <th>账户余额</th>
+            <th>级别</th>
+            <th>注册时间</th>
+            <th>重置密码</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in queryset %}
+            <tr row-id="{{ row.id }}">
+                <td>{{ row.id }}</td>
+                <td>{{ row.username }}</td>
+                <td>{{ row.mobile }}</td>
+                <td>{{ row.balance }}</td>
+                <td>{{ row.level.title }}（{{ row.level.percent }}%）</td>
+                <td>{{ row.create_date|date:"Y-m-d H:i:s" }}</td>
+                <td>
+                    <a href="{% url 'customer_reset' pk=row.id %}">重置密码</a>
+                </td>
+                <td>
+                    <a href="{% url 'customer_edit' pk=row.id %}" class="btn btn-primary btn-xs">编辑</a>
+                    <a cid="{{ row.id }}" class="btn btn-danger btn-xs btn-delete">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <ul class="pagination">
+        {{ pager_string }}
+    </ul>
+
+
+    {% include 'include/delete_modal.html' %}
+
+{% endblock %}
+
+
+
+{% block js %}
+    <script src="{% static 'js/delete_modal.js' %}"></script>
+    <script>
+        var DELETE_ID;
+        var DELETE_URL = "{% url 'customer_delete' %}";
+    </script>
+
+{% endblock %}

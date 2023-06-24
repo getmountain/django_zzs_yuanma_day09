@@ -1,0 +1,35 @@
+django中有个Q对象
+
+models.XX.objects.filter(id=1)
+models.XX.objects.filter(id__gt=1)
+models.XX.objects.filter(id__gte=1)
+models.XX.objects.filter(name__contains="xx")
+models.XX.objects.filter(id=1, age=19)
+
+方式1：
+	models.XX.objects.filter( Q(id=10) )	
+	models.XX.objects.filter( Q(id=10)&Q(age=19) )	
+	models.XX.objects.filter( Q(id=10)|Q(age=19) )	
+	models.XX.objects.filter( Q(id__gt=10)|Q(age__lte=19) )	
+	models.XX.objects.filter( Q( Q(id__gt=10)|Q(age__lte=19) ) & Q(name=19))	
+
+方式2：
+	q1 = Q()
+	q1.connector = 'OR'
+	q1.children.append(('id', 1))
+	q1.children.append(('age', 10))      id=1 or age=10
+
+
+	q2 = Q()
+	q2.connector = 'ADN'
+	q2.children.append(('size__gt', 10))
+	q2.children.append(('name', 'root'))   size>10 and  name=root
+
+
+	con = Q()
+	con.add(q1, 'AND')
+    con.add(q2, 'AND')
+    (id=1 or age=10 )  AND (size>10 and  name=root)
+
+
+

@@ -1,0 +1,103 @@
+知识点：
+	
+	1.单表和连表
+		models.XX.objects.filter()
+
+		models.XX.objects.filter().select_related("外键字段")
+
+	2.面向对象 __str__
+
+	3.面向对象继承 BootStrap排除字段
+
+	4.ModelForm关联数据
+		- limit_choice_to
+			# level = models.ForeignKey(verbose_name="级别", to="Level", on_delete=models.CASCADE, limit_choices_to={'active': 1})
+
+		- modelForm的__init__方法中，重新为queryset赋值
+			class CustomerModelForm(BootStrapForm, forms.ModelForm):
+				...
+
+			    def __init__(self, request, *args, **kwargs):
+			        super().__init__(*args, **kwargs)
+
+			        # 此处可能用到 request
+			        self.fields['level'].queryset = models.Level.objects.filter(active=1)
+    
+    5.ModelForm保存
+    	在钩子方法中返回值，例如：密码的钩子方法
+
+    	form.instance.xxx  = 123
+    	form.save()
+
+
+    6.钩子方法的执行顺序
+	    class Meta:
+	        model = models.Customer
+	        fields = ["username", 'mobile', 'password', 'confirm_password', 'level']
+
+	7.定制页面的插件
+
+			widget=forms.TextInput
+			widget=forms.PasswordInput
+			widget=forms.Select
+			widget=forms.Textarea
+
+
+			widget=forms.RadioSelect + CSS样式
+
+
+
+
+
+			class CustomerModelForm(BootStrapForm, forms.ModelForm):
+			    exclude_filed_list = ['level']
+
+			    confirm_password = forms.CharField(
+			        label="重复密码",
+			        widget=forms.PasswordInput(render_value=True)
+			    )
+
+			    class Meta:
+			        model = models.Customer
+			        fields = ["username", 'mobile', 'password', 'confirm_password', 'level']
+			        widgets = {
+			            'password': forms.PasswordInput(render_value=True),
+			            'level': forms.RadioSelect(attrs={'class': "form-radio"})
+			        }
+
+    8.ModelForm表单验证
+    	- Models中
+    	- 字段validators
+    	- 钩子方法
+
+    	class Customer(ActiveBaseModel):
+		    """ 客户表 """
+		    username = models.CharField(verbose_name="用户名", max_length=32, db_index=True)
+		    password = models.CharField(verbose_name="密码", max_length=64)
+		    mobile = models.CharField(verbose_name="手机号", max_length=11, db_index=True, validators=[RegexValidator(r'^\d{11}$', '手机号格式错误'), ],)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

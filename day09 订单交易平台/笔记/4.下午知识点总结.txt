@@ -1,0 +1,89 @@
+知识点
+	1.对话框
+		- 标签属性
+		- js方法
+
+	2.发送ajax - GET
+		$.ajax({...})
+
+	3.ajax请求携带请求头 -> request.is_ajax()
+	  print(request, type(request))
+
+
+	4.搜索,Q对象
+		- filter/exclude
+		- Q对象
+		- 原生SQL
+
+	        from django.db import connection, connections
+
+	        conn = connections['default']
+	        cursor = conn.cursor()
+	        cursor.execute("""SELECT * from auth_user where id = %s""", [1])
+	        row = cursor.fetchone()
+	        row = cursor.fetchall()
+
+	        conn.commit()
+
+	        cursor.close()
+	        conn.close()
+
+	5.QueryDict对象
+		request.GET
+		request.POST
+
+
+	6.模板语言中可以进行   include
+
+
+	7.jQuery知识点
+		$(".xxx").click(function(){
+			....
+		})
+
+		var v1 = $("#xxxx").attr('cid');
+
+
+		$("tr[xx='123']")
+
+
+		$("xxx").empty();
+		$("xxx").remove();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
